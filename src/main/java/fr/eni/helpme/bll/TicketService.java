@@ -12,7 +12,7 @@ public interface TicketService {
 
     Ticket trouverTicketParId(String id);
 
-    Ticket ajouterTicket(TicketDTO ticketDto);
+    Ticket ajouterTicket(String idCours, TicketDTO ticketDto);
 
     Ticket ajouterResponse(String idTicket, ResponseDTO responseDto);
 }

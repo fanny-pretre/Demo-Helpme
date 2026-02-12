@@ -1,8 +1,10 @@
 package fr.eni.helpme.bll;
 
 import ch.qos.logback.core.net.server.Client;
+import fr.eni.helpme.bo.Cours;
 import fr.eni.helpme.bo.Response;
 import fr.eni.helpme.bo.Ticket;
+import fr.eni.helpme.dal.CoursRepository;
 import fr.eni.helpme.dal.TicketRepository;
 import fr.eni.helpme.dto.TicketDTO;
 import fr.eni.helpme.dto.ResponseDTO;
@@ -22,11 +24,13 @@ import java.util.Optional;
 @Service
 public class TicketServiceImpl implements TicketService {
 
+    private final CoursRepository coursRepository;
     @NonNull
     private TicketRepository ticketRepository;
 
-    public TicketServiceImpl(@NonNull TicketRepository ticketRepository) {
+    public TicketServiceImpl(@NonNull TicketRepository ticketRepository, CoursRepository coursRepository) {
         this.ticketRepository = ticketRepository;
+        this.coursRepository = coursRepository;
     }
 
     @Override
@@ -45,9 +49,13 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public Ticket ajouterTicket(TicketDTO ticketDto) {
+    public Ticket ajouterTicket(String idCours, TicketDTO ticketDto) {
 
+        Cours cours = coursRepository.findById(idCours).orElseThrow(()->new TicketNonTrouve(idCours));
         Ticket ticket = new Ticket(ticketDto.getAuteur(), ticketDto.getMessage());
+        ticket.setCours(cours);
+
+
         BeanUtils.copyProperties(ticketDto, ticketDto);
 
         Ticket newTicket= null;

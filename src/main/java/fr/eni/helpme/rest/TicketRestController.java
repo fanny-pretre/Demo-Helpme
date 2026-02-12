@@ -44,15 +44,15 @@ public class TicketRestController {
     }
 
     // POST
-    @PostMapping
-    public ResponseEntity<Ticket> createTicket(@Valid @RequestBody TicketDTO ticketDTO, BindingResult bindingResult) {
+    @PostMapping("/{idCours}")
+    public ResponseEntity<Ticket> createTicket(@PathVariable(name = "idCours") String idCours, @RequestBody TicketDTO ticketDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(null);
         }
 
-       Ticket createdTicket = ticketService.ajouterTicket(ticketDTO);
+       Ticket createdTicket = ticketService.ajouterTicket(idCours, ticketDTO);
         return ResponseEntity.status(HttpStatus.CREATED).header("Location", "/api/tickets/" + createdTicket.getId())
                 .body( createdTicket);
     }

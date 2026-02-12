@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,6 +23,10 @@ public class Ticket {
     @EqualsAndHashCode.Exclude
     private LocalDateTime creation;
     private Etat etat;
+
+    @DocumentReference
+    @Field("courdId")
+    private Cours cours;
 
    private List<Response> responses;
 
